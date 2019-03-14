@@ -1,9 +1,6 @@
 # encoding: utf-8
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 from tkinter import scrolledtext, ttk
-from Tkinter import*
+from tkinter import*
 import datetime
 import os
 import time
@@ -61,7 +58,6 @@ def readOneExcel(excelName=''):
     else:
       inputSheetKey=entry1.get()
       if inputSheetKey.strip()=='':
-        printToPanel("特殊的sheet，得告诉我是啥 比如 明细")
         raise Exception("特殊的sheet，得告诉我是啥 比如 明细")
       p1 = entry1.get()
       if p1 in str(i):
@@ -167,8 +163,8 @@ def main():
       time.sleep(60)
   except Exception as e:
     print(e)
-    printToPanel(e.message)
-    printToPanel ("error 出错啦  ，快截图给我瞅瞅")
+    printToPanel(str(e))
+    printToPanel("error 出错啦  ，快截图给我瞅瞅")
     print(type)
 
 
@@ -181,7 +177,7 @@ myWindow.title('excel合并')
 
 #设置窗口大小
 width = 900
-height = 450
+height = 500
 type=0
 
 v=IntVar()
@@ -226,11 +222,11 @@ language=[('无',0),('所有文件所有sheet合并',1),('所有文件特殊shee
 scr = scrolledtext.ScrolledText(myWindow, width=70, height=13,font=("隶书",18))  #滚动文本框（宽，高（这里的高应该是以行数为单位），字体样式）
 scr.place(x=20, y=130) #滚动文本框在页面的位置
 
-Label(myWindow, text="要单独合并的sheet名/共同的字，例如：明细表，明细表1，明细2。则输入\"明细\" :").place(x=10,y=97)
+Label(myWindow, text="要单独合并的sheet名/共同的字，例如：明细表，明细表1，明细2。则输入\"明细\" :").place(x=10,y=102)
 
 # #Entry控件布局
 entry1=Entry(myWindow)
-entry1.place(x=510,y=95)
+entry1.place(x=490,y=100)
 
 
 #for循环创建单选框
