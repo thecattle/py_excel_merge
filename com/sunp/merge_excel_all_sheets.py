@@ -155,4 +155,4 @@ def main():
     input('用你那小胖手点一下enter键结束了我吧，我不活了...')
 
 if __name__ == "__main__":
-   main()
+  main()
