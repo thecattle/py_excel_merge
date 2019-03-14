@@ -61,6 +61,7 @@ def readOneExcel(excelName=''):
     else:
       inputSheetKey=entry1.get()
       if inputSheetKey.strip()=='':
+        printToPanel("特殊的sheet，得告诉我是啥 比如 明细")
         raise Exception("特殊的sheet，得告诉我是啥 比如 明细")
       p1 = entry1.get()
       if p1 in str(i):
@@ -77,6 +78,11 @@ def readOneExcel(excelName=''):
 
 def writeToOneExcel(dirName='', toExcelName=''):
   filelists = dir2list(dirName)
+  if len(filelists):
+    printToPanel("一共有%d份excel表格，开始处理" %(len(filelists)))
+  else:
+    raise Exception("files文件夹内无数据")
+
   rowNum = 1
   colNum = 1
   wb = Workbook()
@@ -115,7 +121,6 @@ def writeToOneExcel(dirName='', toExcelName=''):
     endtime = datetime.datetime.now()
     printToPanel ("end 用时[%s]秒 ,files[%s]" % ((endtime - starttime).seconds, afile))
     printToPanel("")
-  print ("合并结束，xls的文件小弟是不合并的哦")
   print("")
 
 # 将列数转成列名对应单元格
@@ -177,7 +182,7 @@ myWindow.title('excel合并')
 #设置窗口大小
 width = 900
 height = 450
-type=1
+type=0
 
 v=IntVar()
 
@@ -189,7 +194,8 @@ myWindow.geometry(alignstr)
 
 #设置窗口是否可变长、宽，True：可变，False：不可变
 myWindow.resizable(width=False, height=True)
-Label(myWindow,text='有问题及时截图给我').pack(anchor=W)
+Label(myWindow,text='有问题及时截图给我，xls格式的文件，需要手动保存成xlsx的哦').pack(anchor=W)
+
 
 def printToPanel(txt):
   scr.insert(END,txt+"\n")
@@ -202,24 +208,29 @@ def callRB():
   type=v.get()
 
 def start():
-  if btn.instate(['!disabled']) :
+  if btn.instate(['!disabled']):
     btn.state(['disabled'])
-  main()
+  if type==0:
+    printToPanel("单选框得选一个！！！！！！！！")
+    raise Exception("单选框得选一个！！！！！！！！")
+  if type!=0:
+    main()
+
 
 btn=ttk.Button(myWindow,text='确定',command=start)
 btn.pack(side=BOTTOM)
 
 #列表中存储的是元素是元组
-language=[('all',1),('target sheet',2)]
+language=[('无',0),('所有文件所有sheet合并',1),('所有文件特殊sheet合并',2)]
 
 scr = scrolledtext.ScrolledText(myWindow, width=70, height=13,font=("隶书",18))  #滚动文本框（宽，高（这里的高应该是以行数为单位），字体样式）
-scr.place(x=20, y=100) #滚动文本框在页面的位置
+scr.place(x=20, y=130) #滚动文本框在页面的位置
 
-Label(myWindow, text="要单独合并的sheet名/共同的字，例如：明细表，明细表1，明细2。则输入\"明细\" :").place(x=10,y=73)
-#
+Label(myWindow, text="要单独合并的sheet名/共同的字，例如：明细表，明细表1，明细2。则输入\"明细\" :").place(x=10,y=97)
+
 # #Entry控件布局
 entry1=Entry(myWindow)
-entry1.place(x=510,y=70)
+entry1.place(x=510,y=95)
 
 
 #for循环创建单选框
