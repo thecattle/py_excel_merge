@@ -1,6 +1,8 @@
 # encoding: utf-8
 import datetime
-import openpyxl, os, time
+import os
+import time
+import openpyxl
 
 from openpyxl import load_workbook, Workbook
 
@@ -101,8 +103,8 @@ def writeToOneExcel(dirName='', toExcelName=''):
     endtime = datetime.datetime.now()
     print ("end 用时[%s]秒 ,files[%s]" % ((endtime - starttime).seconds, afile))
     print("")
-  print ("合并结束")
-
+  print ("合并结束，xls的文件小弟是不合并的哦")
+  print("")
 
 # 将列数转成列名对应单元格
 def num2column(num):
@@ -121,12 +123,36 @@ def num2column(num):
 
 
 def main():
-  path = os.path.abspath('.')
-  dirName = path + "/aba"
-  toExcelName = path + "/total1.xlsx"
-  writeToOneExcel(dirName, toExcelName)
-  # print(num2column(2))
-
+  try:
+    path = os.path.abspath('.')
+    dirName=os.path.join(path, 'files')
+    toExcelName = path + "/total.xlsx"
+    writeToOneExcel(dirName, toExcelName)
+    words = [
+      "代码跑完啦，看看对不对",
+      "代码跑完啦，还在忙吗",
+      "代码跑完啦，还不理我已经过去2分钟了",
+      "要多喝水，多去厕所",
+      "已经过去4分钟了",
+      "已经过去5分钟了",
+      "看看我吧，不要总低头看发票，对眼睛不好",
+      "我不行了，我困了",
+      "emmmm。。。",
+      "大河向东流啊 天上的星星参北斗啊  啊啊啊",
+      "我是一只小小小小鸟",
+      "飞呀飞不高嗷嗷嗷嗷",
+      "你背面有个人 长的真帅",
+      "拜拜了您呐",
+      "拜拜了您呐那哪拿",
+    ]
+    for i in words:
+      print(i)
+      time.sleep(60)
+    input('用你那小胖手点一下enter键结束了我吧，我不活了...')
+  except Exception as e:
+    print(e)
+    print ("error 出错啦  ，快截图给我瞅瞅")
+    input('用你那小胖手点一下enter键结束了我吧，我不活了...')
 
 if __name__ == "__main__":
-  main()
+   main()
