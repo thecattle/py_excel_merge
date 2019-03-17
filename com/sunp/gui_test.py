@@ -1,10 +1,9 @@
-# encoding: utf-8
+#encoding: utf-8
 from tkinter import scrolledtext, ttk
 from tkinter import*
 import datetime
 import os
 import time
-
 from openpyxl import load_workbook, Workbook
 
 '''
@@ -52,7 +51,9 @@ def readOneExcel(excelName=''):
   sheetNames = book.sheetnames
   sheets = []
   for i in sheetNames:
-    sheet = book.get_sheet_by_name(i)
+    # sheet = book.get_sheet_by_name(book[i])
+    sheet = book[i]
+
     if type == 1:
       sheets.append(sheet)
     else:
@@ -96,20 +97,17 @@ def writeToOneExcel(dirName='', toExcelName=''):
     for sheet in lists:
       for row in sheet.rows:
         for col in row:
-          # if rowNum==1:
-          #     ws.column_dimensions[num2column(colNum)].width = 18.0
+          if rowNum==1:
+              ws.column_dimensions[num2column(colNum)].width = 18.0
           try:
             if col.value is not None:
               if col.data_type == 'd':
                 ws.cell(row=rowNum, column=colNum).value = col.value
-              if col.data_type == 's':
-                ws.cell(row=rowNum, column=colNum).value = col.value.encode(
-                    'gbk').decode('gbk').encode('utf8')
-              if isinstance(col.value, long):
-                ws.cell(row=rowNum, column=colNum).value = long(col.value)
-              # print(col.value)
+              else:
+                ws.cell(row=rowNum, column=colNum).value = col.value
           except Exception as e:
-            a = e;
+            print(e)
+            printToPanel(str(e))
           colNum = colNum + 1
         rowNum = rowNum + 1
         colNum = 1
