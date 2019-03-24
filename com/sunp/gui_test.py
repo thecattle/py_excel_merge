@@ -6,6 +6,7 @@ import datetime
 import os
 import time
 from openpyxl import load_workbook, Workbook
+from openpyxl.utils import get_column_letter
 
 '''
 功能：打开一个excel文件
@@ -86,7 +87,7 @@ def writeToOneExcel(dirName='', toExcelName=''):
   wb = Workbook()
 
   # 为工作簿添加sheet1工作表
-  ws = wb.active;
+  ws = wb.active
   ws.title = "Sheet"
 
   for afile in filelists:
@@ -102,15 +103,17 @@ def writeToOneExcel(dirName='', toExcelName=''):
         notBlank=False
         for col in row:
           if rowNum==2:
-              ws.column_dimensions[num2column(colNum)].width = 18.0
+              ws.column_dimensions[get_column_letter(colNum)].width = 18.0
           try:
             if col.value is not None:
               notBlank=True
-            # if col.value is not None & len(col.value)!=0:
-              if col.data_type == 'd':
-                ws.cell(row=rowNum, column=colNum).value = col.value
-              else:
-                ws.cell(row=rowNum, column=colNum).value = col.value
+              cell=ws.cell(row=rowNum, column=colNum)
+              cell.border=col.border
+              cell.fill=col.fill
+              cell.font=col.font
+              cell.alignment=col.alignment
+              cell.value = col.value
+              print(cell.value)
           except Exception as e:
             print(e)
             printToPanel(str(e))
@@ -128,22 +131,6 @@ def writeToOneExcel(dirName='', toExcelName=''):
     printToPanel ("end 用时[%s]秒 ,files[%s]" % ((endtime - starttime).seconds, afile))
     printToPanel("")
   print("")
-
-# 将列数转成列名对应单元格
-def num2column(num):
-  interval = ord('Z') - ord('A')
-  tmp = ''
-  multiple = num // interval
-  remainder = num % interval
-  while multiple > 0:
-    if multiple > 25:
-      tmp += 'A'
-    else:
-      tmp += chr(64 + multiple)
-    multiple = multiple // interval
-  tmp += chr(64 + remainder)
-  return tmp
-
 
 def main():
   try:
