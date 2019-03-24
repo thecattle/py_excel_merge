@@ -15,7 +15,7 @@ from openpyxl import load_workbook, Workbook
 
 def openOneExcel(excelName=''):
   try:
-    workbook = load_workbook(filename = excelName, read_only=True)
+    workbook = load_workbook(filename = excelName, read_only=True,data_only=True)
     return workbook
   except Exception as e:
     print(e)
@@ -95,12 +95,17 @@ def writeToOneExcel(dirName='', toExcelName=''):
     if lists is None:
       return
     for sheet in lists:
+      ws.cell(row=rowNum, column=colNum).value = str(afile)+" - "+sheet.title
+      rowNum=rowNum+1
       for row in sheet.rows:
+        notBlank=False
         for col in row:
-          if rowNum==1:
+          if rowNum==2:
               ws.column_dimensions[num2column(colNum)].width = 18.0
           try:
             if col.value is not None:
+              notBlank=True
+            # if col.value is not None & len(col.value)!=0:
               if col.data_type == 'd':
                 ws.cell(row=rowNum, column=colNum).value = col.value
               else:
@@ -109,9 +114,15 @@ def writeToOneExcel(dirName='', toExcelName=''):
             print(e)
             printToPanel(str(e))
           colNum = colNum + 1
-        rowNum = rowNum + 1
+        if notBlank:
+          rowNum = rowNum + 1
         colNum = 1
+      #每个sheet空一行
+      rowNum=rowNum+1
+
+
       wb.save(toExcelName)
+
     endtime = datetime.datetime.now()
     printToPanel ("end 用时[%s]秒 ,files[%s]" % ((endtime - starttime).seconds, afile))
     printToPanel("")
@@ -137,6 +148,7 @@ def main():
   try:
     path = os.path.abspath('.')
     dirName=os.path.join(path, 'files')
+    # dirName=os.path.join(path, '/Users/sunpeng/Develop/excel/inputs')
     toExcelName = path + "/total.xlsx"
     writeToOneExcel(dirName, toExcelName)
     words = [
