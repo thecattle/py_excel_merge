@@ -1,4 +1,5 @@
 #encoding: utf-8
+import threading
 from tkinter import scrolledtext, ttk
 from tkinter import*
 import datetime
@@ -220,7 +221,10 @@ def start():
     printToPanel("单选框得选一个！！！！！！！！")
     raise Exception("单选框得选一个！！！！！！！！")
   if type!=0:
-    main()
+    th=threading.Thread(target=main)
+    th.setDaemon(True)#守护线程
+    th.start()
+
 
 
 btn=ttk.Button(myWindow,text='确定',command=start)
